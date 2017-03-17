@@ -35,7 +35,7 @@ open class WDExpandableTableView: UITableView, UITableViewDelegate, UITableViewD
     override open func awakeFromNib() {
         self.delegate = self
         self.dataSource = self
-        self.register(UINib(nibName: "SubTableCell", bundle: nil), forCellReuseIdentifier: "SubTableCell")
+        self.register(UINib(nibName: "SubTableCell", bundle: Bundle(for: SubTableCell.classForCoder())), forCellReuseIdentifier: "SubTableCell")
         
         visibleSections = [Int]()
     }
