@@ -32,8 +32,10 @@ class ViewController: UIViewController, WDExpandableTableViewDelegate {
     
     func parentCell(forParentAtIndex parentIndex: Int) -> UITableViewCell {
         let cell:UITableViewCell = UITableViewCell()
-        cell.backgroundColor = UIColor.red
+        cell.backgroundColor = UIColor.black
         cell.selectionStyle = .none
+        cell.textLabel?.textColor = UIColor.white
+        cell.textLabel?.text = "Category \(parentIndex+1)"
         return cell
     }
     
