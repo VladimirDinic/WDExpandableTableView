@@ -2,7 +2,7 @@ Pod::Spec.new do |s|
 
 s.platform = :ios
 s.name             = "WDExpandableTableView"
-s.version          = "0.0.1"
+s.version          = "0.0.2"
 s.summary          = "WDExpandableTableView is a keyboard manager for iOS apps."
 
 s.description      = <<-DESC
@@ -15,6 +15,7 @@ s.author           = { "Vladimir Dinic" => "vladimir88dev@gmail.com" }
 s.source           = { :git => "https://github.com/VladimirDinic/WDExpandableTableView.git", :tag => "#{s.version}"}
 
 s.ios.deployment_target = "10.0"
-s.source_files = "WDExpandableTableView/WDExpandableTableView/WDExpandableTableView/*"
+s.source_files = "WDExpandableTableView/WDExpandableTableView/WDExpandableTableView/*.{.swift}"
+s.resource_bundles = "WDExpandableTableView/WDExpandableTableView/WDExpandableTableView/*.{xib}"
 
 end

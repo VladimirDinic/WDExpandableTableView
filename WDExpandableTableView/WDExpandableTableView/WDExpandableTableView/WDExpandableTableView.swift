@@ -14,7 +14,7 @@ public enum ExpandableTableType
     case canExpandAll
 }
 
-protocol WDExpandableTableViewDelegate{
+public protocol WDExpandableTableViewDelegate{
     func heightForParentCell(forParentAtIndex parentIndex:Int) -> CGFloat
     func heightForChildCell(atIndexPath indexPath:IndexPath) -> CGFloat
     func numberOfParentCells() -> Int
@@ -30,7 +30,7 @@ open class WDExpandableTableView: UITableView, UITableViewDelegate, UITableViewD
     private var visibleSection:Int?
     private var visibleSections:[Int]?
     
-    var delegateExpandable:WDExpandableTableViewDelegate! = nil
+    open var delegateExpandable:WDExpandableTableViewDelegate! = nil
     
     override open func awakeFromNib() {
         self.delegate = self
