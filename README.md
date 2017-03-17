@@ -7,5 +7,17 @@ Expandable TableView for iOS written in Swift
 
 ![GitHub Logo](/Docs/Images/WDExpandableTableView.gif)
 
+# Installation:
+## Manual:
+Download this project and add WDExpandableTableView folder (with WDExpandableTableView.swift file) to your project
+
+## CocoaPods:
+```Ruby
+target '<TargetName>' do
+    use_frameworks!
+    pod 'WDExpandableTableView', ' ~> 0.0.4'
+end
+```
+
 # Note
 Documentation is still in preparation.
