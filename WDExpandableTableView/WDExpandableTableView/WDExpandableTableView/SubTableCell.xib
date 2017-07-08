@@ -36,6 +36,7 @@
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
                 <outlet property="subTable" destination="ZYt-qg-0DT" id="2Jg-NA-L6z"/>
             </connections>
