@@ -16,21 +16,21 @@ class ViewController: UIViewController, WDExpandableTableViewDelegate {
         // Do any additional setup after loading the view, typically from a nib.
         myExpandableTableView.delegateExpandable = self
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    func numberOfParentCells() -> Int {
+    func numberOfParentCells(tableView:WDExpandableTableView) -> Int {
         return 5
     }
     
-    func numberOfChildCells(forParentAtIndex parentIndex: Int) -> Int {
+    func numberOfChildCells(tableView:WDExpandableTableView, parentIndex: Int) -> Int {
         return parentIndex+1;
     }
     
-    func parentCell(forParentAtIndex parentIndex: Int) -> UITableViewCell {
+    func parentCell(tableView:WDExpandableTableView, parentIndex: Int) -> UITableViewCell {
         let cell:UITableViewCell = UITableViewCell()
         cell.backgroundColor = UIColor.black
         cell.selectionStyle = .none
@@ -39,7 +39,7 @@ class ViewController: UIViewController, WDExpandableTableViewDelegate {
         return cell
     }
     
-    func childCell(atIndexPath indexPath: IndexPath) -> UITableViewCell {
+    func childCell(tableView:WDExpandableTableView, indexPath: IndexPath) -> UITableViewCell {
         let cell:UITableViewCell = self.myExpandableTableView.dequeueReusableCell(withIdentifier: "Cell")!
         cell.selectionStyle = .none
         let mod = indexPath.row % 3
@@ -54,11 +54,11 @@ class ViewController: UIViewController, WDExpandableTableViewDelegate {
         return cell
     }
     
-    func heightForParentCell(forParentAtIndex parentIndex: Int) -> CGFloat {
+    func heightForParentCell(tableView:WDExpandableTableView, parentIndex: Int) -> CGFloat {
         return 80
     }
     
-    func heightForChildCell(atIndexPath indexPath: IndexPath) -> CGFloat {
+    func heightForChildCell(tableView:WDExpandableTableView, indexPath: IndexPath) -> CGFloat {
         let mod = indexPath.row % 3
         switch mod {
         case 0:
@@ -70,13 +70,13 @@ class ViewController: UIViewController, WDExpandableTableViewDelegate {
         }
     }
     
-    func didSelectCell(atIndexPath indexPath: IndexPath) {
+    func didSelectCell(tableView:WDExpandableTableView, indexPath: IndexPath) {
         print("selected cell for parent index \(indexPath.section) and child index \(indexPath.row)")
     }
     
-    func expandableTableType() -> ExpandableTableType {
+    func expandableTableType(tableView:WDExpandableTableView) -> ExpandableTableType {
         return .canExpandAll
     }
-
+    
 }
 

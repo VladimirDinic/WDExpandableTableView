@@ -15,14 +15,14 @@ public enum ExpandableTableType
 }
 
 public protocol WDExpandableTableViewDelegate{
-    func heightForParentCell(forParentAtIndex parentIndex:Int) -> CGFloat
-    func heightForChildCell(atIndexPath indexPath:IndexPath) -> CGFloat
-    func numberOfParentCells() -> Int
-    func numberOfChildCells(forParentAtIndex parentIndex:Int) -> Int
-    func parentCell(forParentAtIndex parentIndex:Int) -> UITableViewCell
-    func childCell(atIndexPath indexPath:IndexPath) -> UITableViewCell
-    func didSelectCell(atIndexPath indexPath:IndexPath)
-    func expandableTableType() -> ExpandableTableType
+    func heightForParentCell(tableView:WDExpandableTableView, parentIndex:Int) -> CGFloat
+    func heightForChildCell(tableView:WDExpandableTableView, indexPath:IndexPath) -> CGFloat
+    func numberOfParentCells(tableView:WDExpandableTableView) -> Int
+    func numberOfChildCells(tableView:WDExpandableTableView, parentIndex:Int) -> Int
+    func parentCell(tableView:WDExpandableTableView, parentIndex:Int) -> UITableViewCell
+    func childCell(tableView:WDExpandableTableView, indexPath:IndexPath) -> UITableViewCell
+    func didSelectCell(tableView:WDExpandableTableView, indexPath:IndexPath)
+    func expandableTableType(tableView:WDExpandableTableView) -> ExpandableTableType
 }
 
 open class WDExpandableTableView: UITableView, UITableViewDelegate, UITableViewDataSource, WDSubTableViewDelegate {
@@ -41,15 +41,19 @@ open class WDExpandableTableView: UITableView, UITableViewDelegate, UITableViewD
     }
     
     /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
+     // Only override draw() if you perform custom drawing.
+     // An empty implementation adversely affects performance during animation.
+     override func draw(_ rect: CGRect) {
+     // Drawing code
+     }
+     */
     
     public func numberOfSections(in tableView: UITableView) -> Int {
-        return delegateExpandable.numberOfParentCells()
+        if let delegate = delegateExpandable
+        {
+            return delegate.numberOfParentCells(tableView: self)
+        }
+        return 0
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -59,7 +63,7 @@ open class WDExpandableTableView: UITableView, UITableViewDelegate, UITableViewD
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0
         {
-            return delegateExpandable.parentCell(forParentAtIndex: indexPath.section)
+            return delegateExpandable.parentCell(tableView: self, parentIndex: indexPath.section)
         }
         else
         {
@@ -74,23 +78,23 @@ open class WDExpandableTableView: UITableView, UITableViewDelegate, UITableViewD
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0
         {
-            return delegateExpandable.heightForParentCell(forParentAtIndex: indexPath.section)
+            return delegateExpandable.heightForParentCell(tableView: self, parentIndex: indexPath.section)
         }
         else
         {
-            if self.delegateExpandable.expandableTableType() == .canExpandAll
+            if self.delegateExpandable.expandableTableType(tableView: self) == .canExpandAll
             {
                 if let sections = visibleSections
                 {
                     if sections.contains(indexPath.section)
                     {
                         var cellsTotalHeight:CGFloat = 0.0
-                        let numberOfRows = self.delegateExpandable.numberOfChildCells(forParentAtIndex: indexPath.section)
+                        let numberOfRows = self.delegateExpandable.numberOfChildCells(tableView: self, parentIndex: indexPath.section)
                         if numberOfRows > 0
                         {
                             for i in 0...numberOfRows-1
                             {
-                                cellsTotalHeight += self.delegateExpandable.heightForChildCell(atIndexPath: IndexPath(row: i, section: indexPath.section))
+                                cellsTotalHeight += self.delegateExpandable.heightForChildCell(tableView: self, indexPath: IndexPath(row: i, section: indexPath.section))
                             }
                         }
                         
@@ -111,12 +115,12 @@ open class WDExpandableTableView: UITableView, UITableViewDelegate, UITableViewD
                 if indexPath.section == visibleSection
                 {
                     var cellsTotalHeight:CGFloat = 0.0
-                    let numberOfRows = self.delegateExpandable.numberOfChildCells(forParentAtIndex: indexPath.section)
+                    let numberOfRows = self.delegateExpandable.numberOfChildCells(tableView: self, parentIndex: indexPath.section)
                     if numberOfRows > 0
                     {
                         for i in 0...numberOfRows-1
                         {
-                            cellsTotalHeight += self.delegateExpandable.heightForChildCell(atIndexPath: IndexPath(row: i, section: indexPath.section))
+                            cellsTotalHeight += self.delegateExpandable.heightForChildCell(tableView: self, indexPath: IndexPath(row: i, section: indexPath.section))
                         }
                     }
                     
@@ -137,14 +141,14 @@ open class WDExpandableTableView: UITableView, UITableViewDelegate, UITableViewD
         }
         else
         {
-            delegateExpandable.didSelectCell(atIndexPath: IndexPath(row: indexPath.row-1, section: indexPath.section))
+            delegateExpandable.didSelectCell(tableView: self, indexPath: IndexPath(row: indexPath.row-1, section: indexPath.section))
         }
     }
     
     func toggleSection(atIndex index:Int)
     {
         self.beginUpdates()
-        if self.delegateExpandable.expandableTableType() == .canExpandAll
+        if self.delegateExpandable.expandableTableType(tableView: self) == .canExpandAll
         {
             if var sections = visibleSections
             {
@@ -187,19 +191,19 @@ open class WDExpandableTableView: UITableView, UITableViewDelegate, UITableViewD
     }
     
     func subTableNumberOfChildCells(forParentAtIndex parentIndex: Int) -> Int {
-        return delegateExpandable.numberOfChildCells(forParentAtIndex: parentIndex)
+        return delegateExpandable.numberOfChildCells(tableView: self, parentIndex: parentIndex)
     }
     
     func subTableDidSelectCell(atIndexPath indexPath: IndexPath) {
-        return delegateExpandable.didSelectCell(atIndexPath: indexPath)
+        return delegateExpandable.didSelectCell(tableView: self, indexPath: indexPath)
     }
     
     func subTableHeightForChildCell(atIndexPath indexPath: IndexPath) -> CGFloat {
-        return delegateExpandable.heightForChildCell(atIndexPath: indexPath)
+        return delegateExpandable.heightForChildCell(tableView: self, indexPath: indexPath)
     }
     
     func subTableCell(atIndexPath indexPath: IndexPath) -> UITableViewCell {
-        return delegateExpandable.childCell(atIndexPath: indexPath)
+        return delegateExpandable.childCell(tableView: self, indexPath: indexPath)
     }
-
+    
 }
