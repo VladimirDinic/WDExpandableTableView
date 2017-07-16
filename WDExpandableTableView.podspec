@@ -2,7 +2,7 @@ Pod::Spec.new do |s|
 
 s.platform = :ios
 s.name             = "WDExpandableTableView"
-s.version          = "0.0.8"
+s.version          = "0.0.9"
 s.summary          = "WDExpandableTableView is a keyboard manager for iOS apps."
 
 s.description      = <<-DESC
