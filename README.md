@@ -15,7 +15,7 @@ Download this project and add WDExpandableTableView folder (with WDExpandableTab
 ```Ruby
 target '<TargetName>' do
     use_frameworks!
-    pod 'WDExpandableTableView', ' ~> 0.0.8'
+    pod 'WDExpandableTableView', ' ~> 0.0.9'
 end
 ```
 
